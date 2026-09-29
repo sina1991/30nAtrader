@@ -28,6 +28,11 @@ echo "[2/6] Cloning repository..."
 if [ -d "${PROJECT_DIR}/.git" ]; then
     echo "Repository already exists: ${PROJECT_DIR}"
 else
+    if [ -d "${PROJECT_DIR}" ] && [ "$(ls -A "${PROJECT_DIR}")" ]; then
+        echo "ERROR: ${PROJECT_DIR} exists and is not an empty Git repository."
+        exit 1
+    fi
+
     git clone "${REPOSITORY}" "${PROJECT_DIR}"
 fi
 
