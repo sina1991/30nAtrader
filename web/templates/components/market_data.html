@@ -1,0 +1,31 @@
+<div class="box minimal-box">
+
+    <div class="minimal-title">
+        Market Data
+    </div>
+
+
+    <div class="market-symbol">
+
+        {{ symbol }}
+
+        <span>
+            {{ timeframe }}
+        </span>
+
+    </div>
+
+
+    <div class="minimal-row">
+
+        <span>
+            Close
+        </span>
+
+        <strong>
+            {{ "%.2f"|format(close_price) }}
+        </strong>
+
+    </div>
+
+</div>

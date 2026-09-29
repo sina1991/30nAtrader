@@ -1,0 +1,109 @@
+<section class="box calendar-box">
+
+    <div class="box-header calendar-header">
+
+        <div>
+            <h2>Economic Calendar</h2>
+
+            <span class="box-label">
+                USD · High + Medium · All Events
+            </span>
+        </div>
+
+        <div class="calendar-info">
+            <span class="calendar-count">
+                {{ calendar.count }} events
+            </span>
+
+            <span class="calendar-timezone">
+                {{ calendar.timezone_label }}
+            </span>
+        </div>
+
+    </div>
+
+
+    <div class="calendar-table-wrapper">
+
+        <table class="calendar-table">
+
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Currency</th>
+                    <th>Impact</th>
+                    <th>Event</th>
+                    <th>Forecast</th>
+                    <th>Previous</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% if calendar.events %}
+
+                    {% for event in calendar.events %}
+
+                        <tr>
+
+                            <td>
+                                {{ event.date }}
+                            </td>
+
+                            <td class="calendar-time">
+                                {{ event.time }}
+                            </td>
+
+                            <td class="calendar-currency">
+                                {{ event.currency }}
+                            </td>
+
+                            <td>
+                                <span
+                                    class="
+                                        calendar-impact
+                                        calendar-impact-{{ event.impact|lower }}
+                                    "
+                                >
+                                    {{ event.impact }}
+                                </span>
+                            </td>
+
+                            <td class="calendar-event">
+                                {{ event.title }}
+                            </td>
+
+                            <td>
+                                {{ event.forecast or "—" }}
+                            </td>
+
+                            <td>
+                                {{ event.previous or "—" }}
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <tr>
+                        <td
+                            colspan="7"
+                            class="calendar-empty"
+                        >
+                            No USD High/Medium impact events
+                            available.
+                        </td>
+                    </tr>
+
+                {% endif %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>

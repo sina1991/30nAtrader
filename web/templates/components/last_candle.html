@@ -1,0 +1,155 @@
+<div class="box minimal-box candle-box">
+
+    <div class="minimal-title">
+        Last Candle
+    </div>
+
+
+    <div class="candle-time">
+        {{ candle_time }}
+    </div>
+
+
+    <div class="candle-grid">
+
+        <div>
+            <span>O</span>
+            <strong>
+                {{ "%.2f"|format(open_price) }}
+            </strong>
+        </div>
+
+
+        <div>
+            <span>H</span>
+            <strong>
+                {{ "%.2f"|format(high_price) }}
+            </strong>
+        </div>
+
+
+        <div>
+            <span>L</span>
+            <strong>
+                {{ "%.2f"|format(low_price) }}
+            </strong>
+        </div>
+
+
+        <div>
+            <span>C</span>
+            <strong>
+                {{ "%.2f"|format(close_price) }}
+            </strong>
+        </div>
+
+    </div>
+
+
+    <div class="minimal-row">
+
+        <span>
+            Range
+        </span>
+
+        <strong>
+            {{ "%.2f"|format(candle_range) }}
+        </strong>
+
+    </div>
+
+
+    <div class="minimal-row">
+
+        <span>
+            Body
+        </span>
+
+        <strong>
+            {{ "%.2f"|format(candle_body) }}
+        </strong>
+
+    </div>
+
+
+    <div class="minimal-row">
+
+        <span>
+            Upper Wick
+        </span>
+
+        <strong>
+            {{ "%.2f"|format(upper_wick) }}
+        </strong>
+
+    </div>
+
+
+    <div class="minimal-row">
+
+        <span>
+            Lower Wick
+        </span>
+
+        <strong>
+            {{ "%.2f"|format(lower_wick) }}
+        </strong>
+
+    </div>
+
+
+    <div class="minimal-row">
+
+        <span>
+            Body Ratio
+        </span>
+
+        <strong>
+            {{ "%.2f"|format(body_ratio * 100) }}%
+        </strong>
+
+    </div>
+
+
+    <div class="minimal-row">
+
+        <span>
+            Wick Ratio
+        </span>
+
+        <strong>
+            {{ "%.2f"|format(wick_ratio * 100) }}%
+        </strong>
+
+    </div>
+
+
+    <div class="minimal-row">
+
+        <span>
+            Close Position
+        </span>
+
+        <strong>
+            {{ "%.2f"|format(close_position * 100) }}%
+        </strong>
+
+    </div>
+
+
+    <div class="minimal-row">
+
+        <span>
+            Change
+        </span>
+
+        <strong
+            class="{% if change_percent > 0 %}positive{% elif change_percent < 0 %}negative{% else %}muted{% endif %}"
+        >
+            {% if change_percent > 0 %}+{% endif %}
+            {{ "%.4f"|format(change_percent) }}%
+        </strong>
+
+    </div>
+
+</div>

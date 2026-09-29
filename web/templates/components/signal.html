@@ -1,0 +1,67 @@
+<div class="box indicator-box">
+
+    <div class="indicator-title">
+
+        Signal {{ signal.slot }}
+
+    </div>
+
+
+    {% if signal.indicator %}
+
+        <div class="signal-indicator">
+
+            {{ signal.indicator }}
+
+            {% if signal.params %}
+
+                {% for key, value in signal.params.items() %}
+
+                    <span>
+                        {{ value }}
+                    </span>
+
+                {% endfor %}
+
+            {% endif %}
+
+        </div>
+
+
+        {% if signal.value is not none %}
+
+            <div class="indicator-value">
+
+                {{ "%.2f"|format(signal.value) }}
+
+            </div>
+
+        {% else %}
+
+            <div class="signal-placeholder">
+
+                N/A
+
+            </div>
+
+        {% endif %}
+
+
+        <div class="indicator-status {{ signal.color }}">
+
+            {{ signal.status }}
+
+        </div>
+
+
+    {% else %}
+
+        <div class="signal-placeholder">
+
+            Empty
+
+        </div>
+
+    {% endif %}
+
+</div>

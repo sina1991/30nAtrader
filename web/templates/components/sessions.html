@@ -1,0 +1,168 @@
+<section class="box sessions-box">
+
+    <div class="box-header sessions-header">
+
+        <div>
+            <h2>Trading Sessions</h2>
+
+            <span class="box-label">
+                {{ sessions.timezone_label }}
+            </span>
+        </div>
+
+        <div class="sessions-clock">
+
+            <span class="sessions-clock-label">
+                Live Time
+            </span>
+
+            <strong
+                id="sessions-live-time"
+                data-timezone="{{ sessions.timezone }}"
+            >
+                {{ sessions.live_time }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="sessions-timeline"
+        id="sessions-timeline"
+    >
+
+        <div class="sessions-hours">
+
+            {% for hour in range(0, 24, 2) %}
+
+                <span
+                    class="sessions-hour"
+                    style="left: {{ (hour / 24) * 100 }}%;"
+                >
+                    {{ "%02d"|format(hour) }}
+                </span>
+
+            {% endfor %}
+
+        </div>
+
+
+        <div class="sessions-grid">
+
+            {% for hour in range(0, 24, 2) %}
+
+                <span
+                    class="sessions-grid-line"
+                    style="left: {{ (hour / 24) * 100 }}%;"
+                ></span>
+
+            {% endfor %}
+
+
+            <div
+                class="sessions-current-time"
+                id="sessions-current-time"
+                style="left: {{ (sessions.current_minutes / 1440) * 100 }}%;"
+            ></div>
+
+
+            {% for session in sessions.sessions %}
+
+                <div class="session-row">
+
+                    <div class="session-name">
+                        <strong>{{ session.name }}</strong>
+                    </div>
+
+
+                    <div class="session-status">
+
+                        <span
+                            class="session-dot
+                            {% if session.is_open %}
+                                session-open
+                            {% else %}
+                                session-closed
+                            {% endif %}"
+                        ></span>
+
+                        <span>
+                            {{ session.status }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="session-time">
+                        {{ session.label }}
+                    </div>
+
+
+                    <div class="session-track">
+
+                        {% set left =
+                            (session.timeline_start / 1440) * 100
+                        %}
+
+                        {% set width =
+                            (session.duration / 1440) * 100
+                        %}
+
+                        {% if session.timeline_end_extended <= 1440 %}
+
+                            <div
+                                class="session-bar
+                                {% if session.is_open %}
+                                    session-bar-open
+                                {% else %}
+                                    session-bar-closed
+                                {% endif %}"
+                                style="
+                                    left: {{ left }}%;
+                                    width: {{ width }}%;
+                                "
+                            ></div>
+
+                        {% else %}
+
+                            <div
+                                class="session-bar
+                                {% if session.is_open %}
+                                    session-bar-open
+                                {% else %}
+                                    session-bar-closed
+                                {% endif %}"
+                                style="
+                                    left: {{ left }}%;
+                                    width: {{ ((1440 - session.timeline_start) / 1440) * 100 }}%;
+                                "
+                            ></div>
+
+                            <div
+                                class="session-bar
+                                {% if session.is_open %}
+                                    session-bar-open
+                                {% else %}
+                                    session-bar-closed
+                                {% endif %}"
+                                style="
+                                    left: 0%;
+                                    width: {{ ((session.timeline_end_extended - 1440) / 1440) * 100 }}%;
+                                "
+                            ></div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>

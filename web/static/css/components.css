@@ -1,0 +1,549 @@
+
+/* =========================
+   GENERAL BOX
+   ========================= */
+
+.box {
+    background: #1f2937;
+
+    border: 1px solid #374151;
+    border-radius: 10px;
+
+    padding: 18px;
+
+    overflow: hidden;
+}
+
+
+/* =========================
+   HEADER
+   ========================= */
+
+.header-box h1 {
+    margin: 0;
+
+    font-size: 22px;
+}
+
+.header-subtitle {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 12px;
+
+    color: #9ca3af;
+}
+
+
+/* =========================
+   BOX HEADER
+   ========================= */
+
+.box-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+}
+
+.box-header h2 {
+    margin: 0;
+
+    font-size: 16px;
+}
+
+.box-label {
+    font-size: 12px;
+
+    color: #9ca3af;
+}
+
+
+/* =========================
+   CHART
+   ========================= */
+
+.chart-placeholder {
+    flex: 1;
+
+    margin-top: 15px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 6px;
+
+    background: #111827;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   MINIMAL BOX
+   ========================= */
+
+.minimal-box {
+    padding: 15px;
+}
+
+.minimal-title {
+    font-size: 12px;
+
+    color: #9ca3af;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+.market-symbol {
+    margin-top: 8px;
+
+    font-size: 18px;
+
+    font-weight: 600;
+}
+
+.market-symbol span {
+    margin-left: 6px;
+
+    font-size: 11px;
+
+    font-weight: normal;
+
+    color: #9ca3af;
+}
+
+.minimal-row {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 12px;
+
+    font-size: 13px;
+}
+
+.minimal-row span {
+    color: #9ca3af;
+}
+
+.minimal-row strong {
+    font-size: 16px;
+}
+
+
+/* =========================
+   LAST CANDLE
+   ========================= */
+
+.candle-time {
+    margin-top: 6px;
+
+    font-size: 11px;
+
+    color: #6b7280;
+}
+
+.candle-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+
+    margin-top: 20px;
+}
+
+.candle-grid div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.candle-grid span {
+    font-size: 11px;
+
+    color: #9ca3af;
+}
+
+.candle-grid strong {
+    font-size: 14px;
+}
+
+
+/* =========================
+   INDICATORS
+   ========================= */
+
+.indicator-title {
+    font-size: 15px;
+
+    font-weight: 600;
+}
+
+.signal-placeholder {
+    margin-top: 25px;
+
+    text-align: center;
+
+    color: #6b7280;
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   INDICATOR VALUE
+   ========================= */
+
+.indicator-value {
+    margin-top: 25px;
+
+    font-size: 24px;
+
+    font-weight: 600;
+}
+
+
+/* =========================
+   INDICATOR DIFFERENCE
+   ========================= */
+
+.indicator-difference {
+    margin-top: 8px;
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   INDICATOR STATUS
+   ========================= */
+
+.indicator-status {
+    margin-top: 8px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+/* =========================
+   SIGNAL COLORS
+   ========================= */
+
+.green {
+    color: #22c55e;
+}
+
+.yellow {
+    color: #eab308;
+}
+
+.red {
+    color: #ef4444;
+}
+
+.gray {
+    color: #9ca3af;
+}
+
+
+/* =========================
+   REAL CHART
+   ========================= */
+
+.chart-container {
+    flex: 1;
+
+    min-height: 0;
+
+    margin-top: 15px;
+
+    width: 100%;
+}
+
+/* =========================
+TRADING SESSIONS
+========================= */
+
+.sessions-box {
+    margin-bottom: 20px;
+}
+
+.sessions-header {
+    margin-bottom: 18px;
+}
+
+.sessions-clock {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.sessions-clock-label {
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+.sessions-clock strong {
+    margin-top: 2px;
+    font-size: 18px;
+    font-variant-numeric: tabular-nums;
+}
+
+.sessions-timeline {
+    position: relative;
+    width: 100%;
+}
+
+.sessions-hours {
+    position: relative;
+    height: 22px;
+    margin-left: 190px;
+    margin-right: 4px;
+}
+
+.sessions-hour {
+    position: absolute;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: #9ca3af;
+    font-variant-numeric: tabular-nums;
+}
+
+.sessions-grid {
+    position: relative;
+    padding-top: 2px;
+}
+
+.sessions-grid-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: #374151;
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+.sessions-current-time {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e5e7eb;
+    opacity: 0.75;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.session-row {
+    position: relative;
+    min-height: 34px;
+    display: grid;
+    grid-template-columns: 75px 105px 125px minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    z-index: 2;
+}
+
+.session-name {
+    font-size: 13px;
+}
+
+.session-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.session-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+}
+
+.session-open {
+    background: #22c55e;
+}
+
+.session-closed {
+    background: #6b7280;
+}
+
+.session-time {
+    font-size: 11px;
+    color: #9ca3af;
+    white-space: nowrap;
+}
+
+.session-track {
+    position: relative;
+    height: 20px;
+    min-width: 0;
+}
+
+.session-bar {
+    position: absolute;
+    top: 3px;
+    height: 14px;
+    border-radius: 4px;
+    min-width: 2px;
+}
+
+.session-bar-open {
+    background: #22c55e;
+    opacity: 0.72;
+}
+
+.session-bar-closed {
+    background: #6b7280;
+    opacity: 0.45;
+}
+
+
+/* =========================
+TRADING SESSIONS RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .sessions-hours {
+        margin-left: 165px;
+    }
+
+    .session-row {
+        grid-template-columns: 65px 90px 110px minmax(0, 1fr);
+        gap: 8px;
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .sessions-box {
+        overflow-x: auto;
+    }
+
+    .sessions-timeline {
+        min-width: 720px;
+    }
+
+}
+
+
+/* =========================
+   ECONOMIC CALENDAR
+   ========================= */
+
+.calendar-box {
+    margin-bottom: 20px;
+}
+
+.calendar-header {
+    margin-bottom: 18px;
+}
+
+.calendar-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.calendar-count {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.calendar-timezone {
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+.calendar-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 780px;
+}
+
+.calendar-table th {
+    padding: 9px 8px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    color: #9ca3af;
+    border-bottom: 1px solid #374151;
+    white-space: nowrap;
+}
+
+.calendar-table td {
+    padding: 9px 8px;
+    font-size: 11px;
+    border-bottom: 1px solid #1f2937;
+    white-space: nowrap;
+}
+
+.calendar-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.calendar-time {
+    font-variant-numeric: tabular-nums;
+}
+
+.calendar-currency {
+    font-weight: 700;
+}
+
+.calendar-event {
+    white-space: normal !important;
+    min-width: 260px;
+}
+
+.calendar-impact {
+    display: inline-block;
+    min-width: 48px;
+    padding: 3px 6px;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.calendar-impact-high {
+    background: rgba(239, 68, 68, 0.18);
+    color: #f87171;
+}
+
+.calendar-impact-medium {
+    background: rgba(245, 158, 11, 0.18);
+    color: #fbbf24;
+}
+
+.calendar-empty {
+    padding: 20px !important;
+    text-align: center;
+    color: #9ca3af;
+}

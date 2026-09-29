@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{ symbol }} Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/css/style.css"
+        <link rel="stylesheet" href="/static/css/components.css">
+    >
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    {% if error %}
+
+        <section class="module">
+            <div class="module-header">
+                <span class="module-id">ERROR</span>
+            </div>
+
+            <strong>{{ error }}</strong>
+        </section>
+
+    {% else %}
+
+        {# =================================================
+           TOP MODULE BAR
+        ================================================== #}
+
+        <header class="module-bar">
+
+            <div class="module module-mini" data-slot="M11">
+                <span class="module-id">M11</span>
+                <span class="module-label">PRICE</span>
+                <strong>
+                    ${{ "%.2f"|format(close_price) }}
+                </strong>
+            </div>
+
+
+            <div class="module module-mini" data-slot="M12">
+                <span class="module-label">NETWORK</span>
+
+                <strong class="positive">
+                    {{ server_ip }}
+                </strong>
+
+                <strong class="negative">
+                    {{ user_ip }}
+                </strong>
+            </div>
+
+
+            <div class="module module-mini" data-slot="M13">
+                <span class="module-id">M13</span>
+                <span class="module-label">HIGH</span>
+
+                <strong>
+                    ${{ "%.2f"|format(high_price) }}
+                </strong>
+            </div>
+
+
+            <div class="module module-mini" data-slot="M14">
+                <span class="module-id">M14</span>
+                <span class="module-label">LOW</span>
+
+                <strong>
+                    ${{ "%.2f"|format(low_price) }}
+                </strong>
+            </div>
+
+
+            <div class="module module-mini" data-slot="M15">
+                <span class="module-id">M15</span>
+                <span class="module-label">SPREAD</span>
+
+                <strong>
+                    {{ spread }}
+                </strong>
+            </div>
+
+
+            <div class="module module-mini" data-slot="M16">
+                <span class="module-id">M16</span>
+                <span class="module-label">VOLUME</span>
+
+                <strong>
+                    {{ "{:,}".format(tick_volume) }}
+                </strong>
+            </div>
+
+
+            <div class="module module-mini" data-slot="M17">
+                <span class="module-id">M17</span>
+                <span class="module-label">TREND</span>
+
+                {% if signals and signals[2].value is not none %}
+
+                    {% set ma_value = signals[2].value %}
+
+                    {% if close_price > ma_value %}
+                        <strong class="positive">ABOVE MA</strong>
+                    {% elif close_price < ma_value %}
+                        <strong class="negative">BELOW MA</strong>
+                    {% else %}
+                        <strong class="muted">AT MA</strong>
+                    {% endif %}
+
+                {% else %}
+
+                    <strong class="muted">N/A</strong>
+
+                {% endif %}
+            </div>
+
+
+            <div class="module module-mini" data-slot="M18">
+                <span class="module-id">M18</span>
+                <span class="module-label">STATUS</span>
+
+                <strong class="status-online">
+                    <span class="status-dot"></span>
+                    LIVE
+                </strong>
+            </div>
+
+        </header>
+
+
+        {# =================================================
+           MAIN AREA
+        ================================================== #}
+
+        <main class="main-grid">
+
+            {# =============================================
+               CHART
+            ============================================== #}
+
+            <section
+                class="module chart-module"
+                data-module="chart"
+            >
+
+                <div class="module-header">
+
+                    <div>
+                        <span class="module-id">CHART</span>
+
+                        <h2>
+                            {{ symbol }}
+                        </h2>
+                    </div>
+
+
+                    <div class="chart-controls">
+
+                        <button
+                            class="timeframe active"
+                            data-timeframe="M1"
+                            type="button"
+                        >
+                            1M
+                        </button>
+
+                        <button
+                            class="timeframe"
+                            data-timeframe="M5"
+                            type="button"
+                        >
+                            5M
+                        </button>
+
+                        <button
+                            class="timeframe"
+                            data-timeframe="M15"
+                            type="button"
+                        >
+                            15M
+                        </button>
+
+                        <button
+                            class="timeframe"
+                            data-timeframe="H1"
+                            type="button"
+                        >
+                            1H
+                        </button>
+
+                        <button
+                            class="timeframe"
+                            data-timeframe="H4"
+                            type="button"
+                        >
+                            4H
+                        </button>
+
+                        <button
+                            class="timeframe"
+                            data-timeframe="D1"
+                            type="button"
+                        >
+                            1D
+                        </button>
+
+                        <span
+                            id="timeframe-status"
+                            class="timeframe-status"
+                        >
+                            M1 • LIVE DATA
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chart-body">
+
+                    <div class="chart-price">
+
+                        <span>
+                            ${{ "%.2f"|format(close_price) }}
+                        </span>
+
+                        {% set change = close_price - open_price %}
+
+                        <small
+                            class="{% if change > 0 %}positive{% elif change < 0 %}negative{% else %}muted{% endif %}"
+                        >
+                            {% if change > 0 %}+{% endif %}{{ "%.2f"|format(change) }}
+                            ({% if change_percent > 0 %}+{% endif %}{{ "%.2f"|format(change_percent) }}%)
+                        </small>
+
+                    </div>
+
+
+                    <div class="chart-area">
+
+                        <div
+                            id="xauusd-chart"
+                            class="chart-container"
+                        ></div>
+
+                    </div>
+
+
+                    <div class="chart-axis">
+                        <span>{{ timeframe }}</span>
+                        <span>{{ candle_time }}</span>
+                        <span>Live</span>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            {# =============================================
+               SIDE MODULES
+            ============================================== #}
+
+            <aside class="side-grid">
+
+                <article
+                    class="module side-module"
+                    data-slot="M21"
+                >
+                    <div class="module-header">
+                        <span class="module-id">M21</span>
+                        <span class="module-action">•••</span>
+                    </div>
+
+                    <span class="module-label">MA(60)</span>
+
+                    {% if ma60 is not none %}
+
+                        {% set ma60_diff_percent = ((ma60 - close_price) / close_price) * 100 %}
+
+                        {% if ma60 > close_price %}
+                            <strong class="metric positive">
+                                {{ "%.2f"|format(ma60) }}
+                            </strong>
+
+                            <span class="positive">
+                                +{{ "%.4f"|format(ma60_diff_percent) }}%
+                            </span>
+
+                        {% elif ma60 < close_price %}
+                            <strong class="metric negative">
+                                {{ "%.2f"|format(ma60) }}
+                            </strong>
+
+                            <span class="negative">
+                                {{ "%.4f"|format(ma60_diff_percent) }}%
+                            </span>
+
+                        {% else %}
+                            <strong class="metric">
+                                {{ "%.2f"|format(ma60) }}
+                            </strong>
+
+                            <span class="muted">
+                                0.0000%
+                            </span>
+                        {% endif %}
+
+                    {% else %}
+                        <strong class="metric muted">
+                            N/A
+                        </strong>
+                    {% endif %}
+                </article>
+
+
+                <article
+                    class="module side-module"
+                    data-slot="M22"
+                >
+                    <div class="module-header">
+                        <span class="module-id">M22</span>
+                        <span class="module-action">•••</span>
+                    </div>
+
+                    <span class="module-label">MA(100)</span>
+
+                    {% if ma100 is not none %}
+
+                        {% set ma100_diff_percent = ((ma100 - close_price) / close_price) * 100 %}
+
+                        {% if ma100 > close_price %}
+                            <strong class="metric positive">
+                                {{ "%.2f"|format(ma100) }}
+                            </strong>
+
+                            <span class="positive">
+                                +{{ "%.4f"|format(ma100_diff_percent) }}%
+                            </span>
+
+                        {% elif ma100 < close_price %}
+                            <strong class="metric negative">
+                                {{ "%.2f"|format(ma100) }}
+                            </strong>
+
+                            <span class="negative">
+                                {{ "%.4f"|format(ma100_diff_percent) }}%
+                            </span>
+
+                        {% else %}
+                            <strong class="metric">
+                                {{ "%.2f"|format(ma100) }}
+                            </strong>
+
+                            <span class="muted">
+                                0.0000%
+                            </span>
+                        {% endif %}
+
+                    {% else %}
+                        <strong class="metric muted">
+                            N/A
+                        </strong>
+                    {% endif %}
+                </article>
+
+
+                <article
+                    class="module side-module"
+                    data-slot="M23"
+                >
+                    <div class="module-header">
+                        <span class="module-id">M23</span>
+                        <span class="module-action">•••</span>
+                    </div>
+
+                    <span class="module-label">SPREAD</span>
+
+                    <strong class="metric">
+                        {{ spread }}
+                    </strong>
+
+                    <span class="muted">
+                        Database value
+                    </span>
+                </article>
+
+
+                <article
+                    class="module side-module"
+                    data-slot="M24"
+                >
+                    <div class="module-header">
+                        <span class="module-id">M24</span>
+                        <span class="module-action">•••</span>
+                    </div>
+
+                    <span class="module-label">MACD(12,26,9)</span>
+
+                    {% if macd is not none %}
+
+                        <strong class="metric">
+                            {{ "%.4f"|format(macd["macd"]) }}
+                        </strong>
+
+                        <span class="muted">
+                            Signal {{ "%.4f"|format(macd["signal"]) }}
+                        </span>
+
+                        {% if macd["histogram"] > 0 %}
+                            <span class="positive">
+                                Hist +{{ "%.4f"|format(macd["histogram"]) }}
+                            </span>
+                        {% elif macd["histogram"] < 0 %}
+                            <span class="negative">
+                                Hist {{ "%.4f"|format(macd["histogram"]) }}
+                            </span>
+                        {% else %}
+                            <span class="muted">
+                                Hist 0.0000
+                            </span>
+                        {% endif %}
+
+                    {% else %}
+                        <strong class="metric muted">
+                            N/A
+                        </strong>
+                    {% endif %}
+                </article>
+
+
+                <article
+                    class="module side-module"
+                    data-slot="M25"
+                >
+                    <div class="module-header">
+                        <span class="module-id">M25</span>
+                        <span class="module-action">•••</span>
+                    </div>
+
+                    <span class="module-label">RSI(14)</span>
+
+                    {% if rsi is not none %}
+
+                        {% if rsi >= 70 %}
+                            <strong class="metric negative">
+                                {{ "%.2f"|format(rsi) }}
+                            </strong>
+
+                            <span class="negative">
+                                OVERBOUGHT
+                            </span>
+
+                        {% elif rsi <= 30 %}
+                            <strong class="metric positive">
+                                {{ "%.2f"|format(rsi) }}
+                            </strong>
+
+                            <span class="positive">
+                                OVERSOLD
+                            </span>
+
+                        {% else %}
+                            <strong class="metric">
+                                {{ "%.2f"|format(rsi) }}
+                            </strong>
+
+                            <span class="muted">
+                                NEUTRAL
+                            </span>
+                        {% endif %}
+
+                    {% else %}
+                        <strong class="metric muted">
+                            N/A
+                        </strong>
+                    {% endif %}
+                </article>
+
+
+                <article
+                    class="module side-module"
+                    data-slot="M26"
+                >
+                    <div class="module-header">
+                        <span class="module-id">M26</span>
+                        <span class="module-action">•••</span>
+                    </div>
+
+                    <span class="module-label">MACD</span>
+
+                    <strong class="metric muted">
+                        N/A
+                    </strong>
+
+                    <span class="muted">
+                        Indicator not configured
+                    </span>
+                </article>
+
+
+                <article
+                    class="module side-module"
+                    data-slot="M27"
+                >
+                    <div class="module-header">
+                        <span class="module-id">M27</span>
+                        <span class="module-action">•••</span>
+                    </div>
+
+                    <span class="module-label">SUPPORT</span>
+
+                    <strong class="metric muted">
+                        N/A
+                    </strong>
+
+                    <span class="muted">
+                        Not calculated
+                    </span>
+                </article>
+
+
+                <article
+                    class="module side-module"
+                    data-slot="M28"
+                >
+                    <div class="module-header">
+                        <span class="module-id">M28</span>
+                        <span class="module-action">•••</span>
+                    </div>
+
+                    <span class="module-label">RESISTANCE</span>
+
+                    <strong class="metric muted">
+                        N/A
+                    </strong>
+
+                    <span class="muted">
+                        Not calculated
+                    </span>
+                </article>
+
+
+                <article
+                    class="module side-module side-module-wide"
+                    data-slot="M29"
+                >
+                    <div class="module-header">
+                        <span class="module-id">M29</span>
+                        <span class="module-action">•••</span>
+                    </div>
+
+                    <span class="module-label">MA(300)</span>
+
+                    {% if ma300 is not none %}
+
+                        {% set ma300_diff_percent = ((ma300 - close_price) / close_price) * 100 %}
+
+                        {% if ma300 > close_price %}
+                            <strong class="metric positive">
+                                {{ "%.2f"|format(ma300) }}
+                            </strong>
+
+                            <span class="positive">
+                                +{{ "%.4f"|format(ma300_diff_percent) }}%
+                            </span>
+
+                        {% elif ma300 < close_price %}
+                            <strong class="metric negative">
+                                {{ "%.2f"|format(ma300) }}
+                            </strong>
+
+                            <span class="negative">
+                                {{ "%.4f"|format(ma300_diff_percent) }}%
+                            </span>
+
+                        {% else %}
+                            <strong class="metric">
+                                {{ "%.2f"|format(ma300) }}
+                            </strong>
+
+                            <span class="muted">
+                                0.0000%
+                            </span>
+                        {% endif %}
+
+                    {% else %}
+                        <strong class="metric muted">
+                            N/A
+                        </strong>
+                    {% endif %}
+                </article>
+
+            </aside>
+
+
+            {# =============================================
+               SECONDARY
+            ============================================== #}
+
+            <section
+                class="module secondary-module"
+                data-module="secondary"
+            >
+
+                <div class="module-header">
+
+                    <div>
+                        <span class="module-id">
+                            SECONDARY
+                        </span>
+
+                        <h2>
+                            Market Overview
+                        </h2>
+                    </div>
+
+                    <span class="muted">
+                        Live Market Data
+                    </span>
+
+                </div>
+
+
+                <div class="secondary-content">
+
+                    <div class="secondary-item">
+                        <span>Volume</span>
+
+                        <strong>
+                            {{ "{:,}".format(tick_volume) }}
+                        </strong>
+                    </div>
+
+
+                    <div class="secondary-item">
+                        <span>Buy Pressure</span>
+
+                        <strong class="muted">
+                            N/A
+                        </strong>
+                    </div>
+
+
+                    <div class="secondary-item">
+                        <span>Sell Pressure</span>
+
+                        <strong class="muted">
+                            N/A
+                        </strong>
+                    </div>
+
+
+                    <div class="secondary-item">
+                        <span>Volatility</span>
+
+                        <strong class="muted">
+                            N/A
+                        </strong>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        {# =================================================
+           TIME / SESSION
+        ================================================== #}
+
+        <section class="module session-module">
+
+            <div class="session-title">
+
+                <span class="module-id">
+                    TIME / SESSION
+                </span>
+
+                <strong>
+                    Market Sessions
+                </strong>
+
+            </div>
+
+
+            <div class="sessions">
+
+                {% for session in sessions.sessions %}
+
+                    <div class="session">
+
+                        <span class="session-name">
+                            {{ session.name|upper }}
+                        </span>
+
+                        {% if session.is_open %}
+
+                            <span class="session-status open">
+                                OPEN
+                            </span>
+
+                        {% else %}
+
+                            <span class="session-status closed">
+                                CLOSED
+                            </span>
+
+                        {% endif %}
+
+                        <span class="session-time">
+                            {{ session.label }}
+                        </span>
+
+                    </div>
+
+                {% endfor %}
+
+
+                <div class="session session-tehran">
+
+                    <span class="session-name">
+                        TEHRAN
+                    </span>
+
+                    <span class="session-status open">
+                        LOCAL
+                    </span>
+
+                    <span class="session-time">
+                        {{ sessions.live_time }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        {# =================================================
+           NEWS / ECONOMIC CALENDAR
+        ================================================== #}
+
+        <section class="module news-module">
+
+            <div class="module-header">
+
+                <div>
+                    <span class="module-id">
+                        NEWS
+                    </span>
+
+                    <h2>
+                        Economic Calendar
+                    </h2>
+                </div>
+
+                <span class="muted">
+                    {{ calendar.count }} events
+                </span>
+
+            </div>
+
+
+            <div class="news-list">
+
+                {% if calendar.events %}
+
+                    {% for event in calendar.events[:3] %}
+
+                        <div class="news-item">
+
+                            <span class="news-time">
+                                {{ event.time }}
+                            </span>
+
+                            <span
+                                class="
+                                    news-impact
+                                    {% if event.impact == 'High' %}
+                                        high
+                                    {% elif event.impact == 'Medium' %}
+                                        medium
+                                    {% else %}
+                                        low
+                                    {% endif %}
+                                "
+                            >
+                                {{ event.impact|upper }}
+                            </span>
+
+                            <p>
+                                {{ event.currency }}
+                                ·
+                                {{ event.title }}
+
+                                {% if event.forecast %}
+                                    · Forecast: {{ event.forecast }}
+                                {% endif %}
+                            </p>
+
+                        </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <div class="news-item">
+
+                        <span class="news-time">
+                            —
+                        </span>
+
+                        <span class="news-impact low">
+                            NONE
+                        </span>
+
+                        <p>
+                            No USD High/Medium impact events
+                            available.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        {# =================================================
+           STATUS / FOOTER
+        ================================================== #}
+
+        <footer class="status-bar">
+
+            <div class="status-left">
+
+                <span class="status-online">
+
+                    <span class="status-dot"></span>
+
+                    SYSTEM ONLINE
+
+                </span>
+
+                <span>
+                    API CONNECTED
+                </span>
+
+                <span>
+                    DATABASE CONNECTED
+                </span>
+
+            </div>
+
+
+            <div class="status-right">
+
+                <span
+                    id="liveTime"
+                    data-timezone="{{ sessions.timezone }}"
+                >
+                    {{ sessions.live_time }}
+                </span>
+
+                <span>
+                    Dashboard v1.0
+                </span>
+
+            </div>
+
+        </footer>
+
+    {% endif %}
+
+</div>
+
+
+<script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+
+<script id="chart-data" type="application/json">
+    {{ chart_data | default([]) | tojson }}
+</script>
+
+<script src="/static/js/main.js"></script>
+
+</body>
+</html>

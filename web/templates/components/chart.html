@@ -1,0 +1,26 @@
+<div class="box chart-box">
+
+    <div class="box-header">
+
+        <h2>
+            Chart
+        </h2>
+
+        <span class="box-label">
+            {{ symbol }} · {{ timeframe }}
+        </span>
+
+    </div>
+
+
+    <div
+        id="xauusd-chart"
+        class="chart-container"
+    ></div>
+
+
+    <script id="chart-data" type="application/json">
+        {{ chart_data | tojson }}
+    </script>
+
+</div>

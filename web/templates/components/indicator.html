@@ -1,0 +1,46 @@
+<div class="box indicator-box">
+
+    <div class="indicator-title">
+
+        MA:{{ indicator.periods }}
+
+    </div>
+
+
+    {% if indicator.ma is not none %}
+
+
+        <div class="indicator-value">
+
+            {{ "%.2f"|format(indicator.ma) }}
+
+        </div>
+
+
+        <div class="indicator-difference {{ indicator.color }}">
+
+            {{ indicator.light }}
+
+            {{ "%.2f"|format(indicator.difference) }}
+
+        </div>
+
+
+        <div class="indicator-status {{ indicator.color }}">
+
+            {{ indicator.status }}
+
+        </div>
+
+
+    {% else %}
+
+        <div class="signal-placeholder">
+
+            Not enough data
+
+        </div>
+
+    {% endif %}
+
+</div>
