@@ -85,6 +85,7 @@ systemctl restart metatrader-dashboard.service
 echo "[6/6] Dashboard started."
 
 echo "========================================"
+SERVER_IP=$(hostname -I | awk "{print \$1}")
 echo "30nAtrader installation completed."
-echo "Dashboard: http://SERVER_IP:8090"
+echo "Dashboard: http://${SERVER_IP}:8090"
 echo "========================================"
